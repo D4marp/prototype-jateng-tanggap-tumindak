@@ -19,14 +19,14 @@ export function RoleSwitch({ peran }: { peran: Peran }) {
   return (
     <form ref={form} action={setPeranAction} className="flex items-center gap-2">
       <input type="hidden" name="kembali" value={path} />
-      <label htmlFor="peran" className="text-xs font-semibold text-on-gold">Lihat sebagai</label>
+      <label htmlFor="peran">Peran demo</label>
       <select
         key={peran}
         id="peran"
         name="peran"
         defaultValue={peran}
         onChange={() => form.current?.requestSubmit()}
-        className="min-h-7 rounded-md border border-[rgb(28_20_0/0.35)] bg-[rgb(255_255_255/0.55)] px-1.5 text-xs font-semibold text-on-gold"
+        className="rounded border border-line bg-surface px-1.5 py-0.5 text-xs font-medium text-ink"
       >
         {OPSI.map(([v, l]) => (<option key={v} value={v}>{l}</option>))}
       </select>

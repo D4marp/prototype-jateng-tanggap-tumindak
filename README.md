@@ -22,6 +22,10 @@ Pengalih "Lihat sebagai" di pita kuning mengganti peran (khusus demo, bukan aute
 
 Data tersimpan di memori server dan kembali ke contoh awal saat server dimulai ulang.
 
+## Lambang
+
+`public/brand/logo-polda-jateng.png` diunduh dari Wikimedia Commons (`File:LOGO_POLDA_JAWA_TENGAH.png`, keterangan "Own work" dari pengunggah, bukan aset resmi yang diverifikasi). Ganti dengan berkas resmi dari Humas/Bidpropam dengan nama yang sama. Favicon: `src/app/icon.png`.
+
 ## Konfigurasi
 
 - `src/lib/domain/config.ts`: angka layanan (disposisi, jarak SP2HP), batas percobaan, masa akses. Semua masih contoh.

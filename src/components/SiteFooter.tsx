@@ -1,8 +1,13 @@
+import { Logo } from "./Logo";
+
 export function SiteFooter() {
   return (
-    <footer className="pb-[calc(96px+env(safe-area-inset-bottom,0px))] pt-9 text-[12.5px] text-muted md:pb-7">
-      <div className="wrap">
-        Prototipe inovasi reserse untuk program Polda Jawa Tengah, Jateng Tanggap Tumindak. Berlaku di SPKT Polda dan Polres jajaran. Seluruh data adalah contoh fiktif.
+    <footer className="mt-16 border-t border-line bg-surface pb-[calc(88px+env(safe-area-inset-bottom,0px))] pt-8 text-[13px] text-muted md:pb-8">
+      <div className="wrap flex items-start gap-4">
+        <Logo tinggi={36} />
+        <p className="m-0 max-w-[70ch]">
+          Prototipe inovasi reserse untuk program Jateng Tanggap Tumindak, Polda Jawa Tengah. Dirancang untuk SPKT Polda dan Polres jajaran. Seluruh nama, nomor, dan kejadian adalah data contoh fiktif. Lambang dipakai sebagai identitas program dan tidak menjadikan situs ini layanan resmi.
+        </p>
       </div>
     </footer>
   );

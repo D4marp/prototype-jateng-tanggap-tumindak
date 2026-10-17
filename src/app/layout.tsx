@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Barlow_Condensed, JetBrains_Mono, Public_Sans } from "next/font/google";
+import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { BottomNav } from "@/components/NavLinks";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
-const barlow = Barlow_Condensed({ variable: "--font-barlow", subsets: ["latin"], weight: ["600", "700"] });
-const public_ = Public_Sans({ variable: "--font-public", subsets: ["latin"] });
+const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"] });
 const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["500", "600"] });
 
 export const metadata: Metadata = {
@@ -18,7 +17,7 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, view
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="id" className={`${barlow.variable} ${public_.variable} ${mono.variable}`}>
+    <html lang="id" className={`${jakarta.variable} ${mono.variable}`}>
       <body className="flex min-h-dvh flex-col">
         <SiteHeader />
         <main className="flex-1">{children}</main>

@@ -6,10 +6,9 @@ import type { Peran } from "@/lib/domain/types";
 export function RoleGate({ butuh, jalur, alasan }: { butuh: Peran; jalur: string; alasan: string }) {
   return (
     <div className="wrap">
-      <div className="card mt-6 max-w-xl">
+      <div className="card mt-8 max-w-xl">
         <div className="card-b grid gap-3">
-          <p className="eyebrow m-0">Akses terbatas</p>
-          <h1 className="m-0 font-display text-[30px] font-bold uppercase leading-none">Halaman ini bukan untuk peran Anda</h1>
+          <h1 className="h2">Halaman ini bukan untuk peran Anda</h1>
           <p className="m-0 text-muted">{alasan}</p>
           <form action={setPeranAction} className="flex flex-wrap items-center gap-3">
             <input type="hidden" name="peran" value={butuh} />

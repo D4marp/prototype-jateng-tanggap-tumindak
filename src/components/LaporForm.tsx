@@ -27,10 +27,10 @@ export function LaporForm() {
   const inv = (k: string) => ({ "aria-invalid": !!e(k), "aria-describedby": e(k) ? `e-${k}` : undefined });
 
   return (
-    <div className="mt-1.5 grid items-start gap-4 min-[920px]:grid-cols-[1.3fr_1fr]">
+    <div className="grid items-start gap-5 min-[920px]:grid-cols-[1.3fr_1fr]">
       <section className="card">
         <div className="card-h">
-          <h2 className="m-0 text-[length:inherit]">Data laporan</h2>
+          <h2 className="m-0 text-[15px] font-semibold">Data laporan</h2>
           <button type="button" className="btn btn-sec btn-sm" onClick={() => setContoh({ n: (contoh?.n ?? 0) + 1, v: CONTOH })}>Isi data contoh</button>
         </div>
         <div className="card-b">
@@ -65,7 +65,7 @@ export function LaporForm() {
             <div><label className="lbl" htmlFor="lokasi">Lokasi kejadian</label><input id="lokasi" name="lokasi" className="field" placeholder="Kecamatan, kabupaten/kota" defaultValue={val("lokasi")} {...inv("lokasi")} />{err("lokasi")}</div>
             <div><label className="lbl" htmlFor="kronologi">Kronologi singkat</label><textarea id="kronologi" name="kronologi" className="field" placeholder="Apa yang terjadi, kapan, di mana, siapa yang terlibat, apa yang hilang atau rusak" defaultValue={val("kronologi")} {...inv("kronologi")} />{err("kronologi")}</div>
             <div><label className="lbl" htmlFor="kerugian">Perkiraan kerugian (Rp)</label><input id="kerugian" name="kerugian" className="field font-mono" inputMode="numeric" placeholder="Boleh dikosongkan" defaultValue={val("kerugian")} /></div>
-            <label className="flex items-start gap-2.5 text-sm"><input type="checkbox" name="bersediaVideoCall" defaultChecked={val("bersediaVideoCall") === "on"} className="mt-px size-5 flex-none accent-gold" />Pelapor bersedia diperiksa lewat video call bila diperlukan</label>
+            <label className="flex items-start gap-2.5 text-sm"><input type="checkbox" name="bersediaVideoCall" defaultChecked={val("bersediaVideoCall") === "on"} className="mt-px size-5 flex-none accent-brand" />Pelapor bersedia diperiksa lewat video call bila diperlukan</label>
             <div><button className="btn btn-pri" type="submit" disabled={pending}>{pending ? "Menyimpan…" : "Simpan dan terbitkan STPL"}</button></div>
             <p className="hint">Prototipe: data disimpan di memori server dan hilang saat server dimulai ulang. NIK dan nomor HP tidak ditampilkan utuh di layar mana pun.</p>
           </form>
@@ -75,15 +75,15 @@ export function LaporForm() {
       <div className="grid min-w-0 gap-4">
         {s.status === "ok" && (
           <section className="card" aria-live="polite">
-            <h2 className="card-h">STPL terbit <span className="pill bg-ok-soft text-ok">Tersimpan</span></h2>
+            <h2 className="card-h">STPL terbit <span className="text-[13px] font-semibold text-ok">Tersimpan</span></h2>
             <div className="card-b grid gap-3.5">
               <div className="grid grid-cols-[auto_1fr] items-center gap-3.5">
-                <div className="size-28 rounded-lg border border-line bg-white p-1.5 [&>svg]:size-full" dangerouslySetInnerHTML={{ __html: s.qr }} />
+                <div className="size-28 rounded-md border border-line bg-white p-1.5 [&>svg]:size-full" dangerouslySetInnerHTML={{ __html: s.qr }} />
                 <div className="min-w-0">
-                  <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Kode tiket</div>
+                  <div className="text-[13px] text-muted">Kode tiket</div>
                   <div className="font-mono text-[21px] font-semibold">{s.id}</div>
                   <div className="mt-1 font-mono text-xs text-muted [overflow-wrap:anywhere]">{s.lp}</div>
-                  <div className="mt-1.5 inline-flex items-center gap-1 text-[11.5px] font-bold text-ok"><IconCheck className="size-[13px]" />Ditandatangani elektronik · {s.kodeStpl}</div>
+                  <div className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold text-ok"><IconCheck className="size-[13px]" />Ditandatangani elektronik · {s.kodeStpl}</div>
                 </div>
               </div>
               <p className="hint m-0">QR berisi tautan halaman progres. Pelapor membukanya dengan kamera ponsel dan memasukkan 4 digit terakhir nomor HP.</p>

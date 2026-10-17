@@ -57,13 +57,13 @@ export function DocList({ docs }: { docs: DocView[] }) {
     <>
       <ul className="m-0 grid list-none gap-2.5 p-0">
         {docs.map((x, n) => (
-          <li key={x.kode} className="grid grid-cols-[40px_1fr_auto] items-center gap-3 rounded-[10px] border border-line px-3 py-2.5">
-            <span className="grid size-10 place-items-center rounded-lg bg-crit-soft font-mono text-[10.5px] font-semibold text-crit">PDF</span>
+          <li key={x.kode} className="grid grid-cols-[40px_1fr_auto] items-center gap-3 rounded-md border border-line px-3 py-2.5">
+            <span className="grid size-10 place-items-center rounded bg-sunk font-mono text-[10.5px] font-semibold text-muted">PDF</span>
             <div className="min-w-0">
               <div className="min-w-0 text-[14.5px] font-bold">{x.jenis === "STPL" ? "Surat Tanda Penerimaan Laporan" : `SP2HP ke-${x.ke}`}</div>
               <div className="text-[12.5px] tabular-nums text-muted">
                 {x.tanggal}
-                <span className="ml-1.5 inline-flex items-center gap-1 text-[11.5px] font-bold text-ok"><IconCheck className="size-[13px]" />TTE</span>
+                <span className="ml-1.5 inline-flex items-center gap-1 text-[11.5px] font-semibold text-ok"><IconCheck className="size-[13px]" />TTE</span>
               </div>
             </div>
             <button type="button" className="btn btn-sec btn-sm" onClick={() => setI(n)}>Lihat</button>

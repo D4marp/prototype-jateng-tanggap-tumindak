@@ -24,7 +24,7 @@ export function VideoCallCard({ tanggal, jam, siapa, unit, lewat }: Props) {
   return (
     <>
       <div className="card-b grid gap-2.5">
-        <div className="font-display text-[26px] font-bold uppercase leading-[1.05]">
+        <div className="text-xl font-bold leading-tight">
           {tanggal}
           <br />
           Pukul {jam} WIB
@@ -52,7 +52,7 @@ export function VideoCallCard({ tanggal, jam, siapa, unit, lewat }: Props) {
         {langkah === "ruang" && (
           <>
             <div className="flex flex-wrap items-center justify-between gap-2.5">
-              <span className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-crit"><span className="size-[9px] rounded-full bg-crit" />Merekam</span>
+              <span className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-crit"><span className="size-[9px] rounded-full bg-crit" />Merekam</span>
               <span className="font-mono text-muted">{mm}:{ss}</span>
             </div>
             <div className="my-3 grid grid-cols-2 gap-2.5">
