@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jateng Tanggap Tumindak (prototipe)
 
-## Getting Started
-
-First, run the development server:
+Prototipe layanan pemantauan laporan polisi Polda Jawa Tengah dan Polres jajaran. **Seluruh data fiktif. Bukan layanan resmi.**
+Next.js 16 (App Router) + Tailwind CSS v4 + TypeScript.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Cara mencoba
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Pengalih "Lihat sebagai" di pita kuning mengganti peran (khusus demo, bukan autentikasi).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Peran | Coba |
+|-------|------|
+| Pelapor | Buka `/progres/RSK-2610-0412`, masukkan 4 digit terakhir HP (ditampilkan sebagai bantuan demo) |
+| Petugas SPKT | `/lapor`, "Isi data contoh", simpan. STPL terbit dengan QR |
+| Penyidik / Pimpinan | `/dashboard`, buka satu laporan, bandingkan tampilan penyidik dan pelapor |
+| Siapa saja | Buka SP2HP, klik tautan verifikasi pada kotak TTE (`/verifikasi/…`) |
 
-## Learn More
+Data tersimpan di memori server dan kembali ke contoh awal saat server dimulai ulang.
 
-To learn more about Next.js, take a look at the following resources:
+## Konfigurasi
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/lib/domain/config.ts`: angka layanan (disposisi, jarak SP2HP), batas percobaan, masa akses. Semua masih contoh.
+- `JTT_SECRET`: kunci penandatangan cookie akses. Wajib diisi di luar demo.
+- `NEXT_PUBLIC_DEMO=0`: menyembunyikan baris "Bantuan demo" pada halaman verifikasi.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Analisis lengkap, temuan pada HTML awal, catatan kepolisian yang perlu divalidasi, dan peta jalan: [docs/ANALISIS.md](docs/ANALISIS.md).

@@ -1,9 +1,10 @@
 import type { NextConfig } from "next";
 
+// Prototipe memakai data hidup (cookie peran, penyimpanan memori), jadi seluruh rute dirender dinamis.
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  cacheComponents: false,
+  partialPrefetching: false,
+  poweredByHeader: false,
   turbopack: {
     rules: {
       "*.css": {
