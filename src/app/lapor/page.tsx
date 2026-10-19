@@ -11,7 +11,7 @@ export default async function Lapor() {
     return <RoleGate butuh="spkt" jalur="/lapor" alasan="Laporan dibuat oleh petugas SPKT bersama pelapor di front office. Pelapor memantau perkembangannya lewat halaman Cek Progres." />;
   return (
     <>
-      <PageHead judul="Buat laporan polisi" sub="Diisi petugas SPKT Polda atau Polres bersama pelapor. Setelah disimpan, sistem menerbitkan STPL berbarcode dengan tanda tangan elektronik." />
+      <PageHead judul="Buat laporan polisi" sub="Diisi petugas SPKT Bareskrim bersama pelapor. Setelah disimpan, sistem menerbitkan STPL berbarcode dengan tanda tangan elektronik." />
       <div className="wrap pt-6"><LaporForm /></div>
     </>
   );

@@ -19,13 +19,13 @@ export function derive(r: Report): Derived {
   log.push({
     t: m.lapor,
     title: "Laporan masuk di SPKT",
-    pub: `Laporan dicatat di SPKT ${s.polda ? "Polda Jawa Tengah" : s.nama}. STPL berbarcode diterbitkan dengan tanda tangan elektronik.`,
-    int: `Diterima piket SPKT dan diteruskan ke ${s.singkat} untuk disposisi.`,
+    pub: `Laporan dicatat di SPKT Bareskrim Polri. STPL berbarcode diterbitkan dengan tanda tangan elektronik.`,
+    int: "Diterima piket SPKT dan diteruskan ke pimpinan Bareskrim untuk disposisi.",
   });
   docs.push({ jenis: "STPL", t: m.lapor, kode: "" });
 
   if (m.disp)
-    log.push({ t: m.disp, title: `Disposisi ${s.singkat}`, pub: `Laporan diteruskan ke ${r.unit} dan penyidik sudah ditunjuk.`, int: `Sprin penyelidikan terbit. Penyidik: ${r.penyidik}.` });
+    log.push({ t: m.disp, title: "Disposisi pimpinan", pub: `Laporan diteruskan ke ${posLabel(s, r.unit)} dan penyidik sudah ditunjuk.`, int: `Sprin penyelidikan terbit. Penyidik: ${r.penyidik}.` });
   if (m.lidik)
     log.push({ t: m.lidik, title: "Penyelidikan dimulai", pub: "Penyidik meminta keterangan dan mengumpulkan barang bukti.", int: r.lidikNote ?? "Cek TKP dan permintaan keterangan pelapor." });
 
@@ -42,7 +42,7 @@ export function derive(r: Report): Derived {
   if (m.selesai) {
     sp("selesai", m.selesai, `Tersangka dan barang bukti diserahkan ke Kejaksaan. SP2HP ke-${k + 1} dikirim.`);
     log[log.length - 1].title = "Berkas lengkap (P21) dan Tahap II";
-    log[log.length - 1].int = `Penanganan ditutup di tingkat ${s.polda ? "Polda" : "Polres"}.`;
+    log[log.length - 1].int = "Penanganan di tingkat Bareskrim ditutup.";
   }
   r.extra?.forEach((e) => log.push(e));
   if (r.vcall)

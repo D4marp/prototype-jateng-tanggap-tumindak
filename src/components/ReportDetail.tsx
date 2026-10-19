@@ -25,7 +25,7 @@ export function ReportDetail({ v }: { v: ReportView }) {
             <Stepper stage={v.stage} />
             <dl className="kv border-t border-line pt-4">
               <dt>Posisi laporan</dt><dd className="font-semibold">{v.posisi}</dd>
-              <dt>Satker</dt><dd>{v.satker}</dd>
+              <dt>Direktorat</dt><dd>{v.satker}</dd>
               <dt>Waktu lapor</dt><dd className="tabular-nums">{v.waktuLapor}</dd>
               <dt>Respons pertama</dt>
               <dd className="tabular-nums">

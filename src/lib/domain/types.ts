@@ -3,26 +3,26 @@ export type StageIdx = 0 | 1 | 2 | 3 | 4 | 5;
 
 export const JENIS = [
   "Penipuan online",
+  "Peretasan dan kebocoran data",
+  "Penipuan investasi",
   "Penggelapan",
-  "Pencurian",
-  "Pencurian kendaraan bermotor",
-  "Pencurian ternak",
-  "Penganiayaan",
-  "Perusakan",
+  "Korupsi",
+  "Narkotika",
+  "Perdagangan orang",
+  "Pertambangan ilegal",
+  "Pencurian lintas wilayah",
   "Lainnya",
 ] as const;
+/** Perkara yang rinciannya tidak boleh tampil di jalur publik. [validasi] daftar akhir oleh pimpinan. */
+export const JENIS_SENSITIF: readonly string[] = ["Perdagangan orang"];
 export type Jenis = (typeof JENIS)[number];
 
 export type Peran = "pelapor" | "spkt" | "penyidik" | "pimpinan";
 
 export interface Satker {
   nama: string;
-  polda: boolean;
   /** Baris kop surat. */
   kop: string;
-  /** Penanda di nomor LP, mis. POLRES BLORA. Kosong untuk Polda. */
-  lp: string;
-  reskrim: string;
   jabatan: string;
   singkat: string;
   sufiks: string;
@@ -61,7 +61,7 @@ export interface VideoCall {
 }
 
 export interface Report {
-  /** Urutan nomor laporan. Di produksi: urutan per satker dari e-MP. */
+  /** Urutan nomor laporan. Di produksi: urutan resmi dari sistem manajemen penyidikan. */
   no: number;
   /** Kode tiket yang tercetak pada STPL. */
   id: string;

@@ -1,8 +1,9 @@
 import Image from "next/image";
+import { BRAND } from "@/lib/brand";
 
-/** Lambang Polda Jateng. Berkas: public/brand/logo-polda-jateng.png (lihat README untuk catatan sumber). */
+/** Lambang Bareskrim Polri. Berkas: public/brand/logo-bareskrim.png (lihat README untuk catatan sumber). */
 export function Logo({ tinggi = 44 }: { tinggi?: number }) {
   return (
-    <Image src="/brand/logo-polda-jateng.png" alt="Lambang Polda Jawa Tengah" width={Math.round(tinggi * 0.73)} height={tinggi} priority className="flex-none" style={{ height: tinggi, width: "auto" }} />
+    <Image src={BRAND.logo} alt={BRAND.logoAlt} width={Math.round(tinggi * BRAND.logoRasio)} height={tinggi} priority className="flex-none" style={{ height: tinggi, width: "auto" }} />
   );
 }

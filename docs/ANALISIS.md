@@ -1,5 +1,7 @@
 # Analisis prototipe HTML dan keputusan pengembangan ke Next.js
 
+> Catatan: prototipe awal dibuat untuk Polda Jateng ("Jateng Tanggap Tumindak"). Versi ini disesuaikan untuk Bareskrim Polri ("Bareskrim Tanggap"). Temuan teknis tetap berlaku; konteks organisasi dan data contoh sudah diganti (lihat bagian 6).
+
 Sumber: artifact HTML satu berkas "Jateng Tanggap Tumindak" (±920 baris, JavaScript murni, data contoh fiktif).
 Semua isi di bawah adalah penilaian teknis dan rancangan. Hal yang menyangkut aturan kepolisian ditandai **[validasi]**: harus dicek oleh Biro Reskrim/Bidkum/Bidpropam sebelum dipakai sebagai kebijakan.
 
@@ -9,18 +11,18 @@ Semua isi di bawah adalah penilaian teknis dan rancangan. Hal yang menyangkut at
 - Satu pintu masuk (front office SPKT) lalu mengalir ke unit, tanpa ketik ulang.
 - Pembedaan tampilan pelapor dan penyidik sebagai gagasan inti.
 - Status layanan yang dapat diukur (disposisi, jarak SP2HP) sehingga pimpinan bisa melihat yang terlambat.
-- Bahasa dan istilah lapangan dipakai apa adanya (LP/B, Unit Resmob, Subdit Jatanras, Kasat Reskrim).
+- Bahasa dan istilah lapangan dipakai apa adanya (LP/B, SPKT, disposisi, gelar perkara, SPDP, P21, Tahap II).
 
 ## 2. Temuan teknis pada HTML (dan perbaikannya)
 
 | # | Temuan | Dampak | Perbaikan di versi Next.js |
 |---|--------|--------|----------------------------|
 | 1 | Seluruh data kasus (kronologi, catatan internal, NIK utuh) dimuat ke peramban, "tampilan pelapor" hanya menyembunyikannya lewat JS | Siapa pun bisa membaca lewat DevTools. Ini kelemahan terbesar | Redaksi dilakukan di server (`lib/server/views.ts`). Payload pelapor tidak memuat kronologi, rencana, catatan internal, atau identitas utuh. Diverifikasi dengan mengambil HTML halaman pelapor dan mencari teks tersebut: tidak ada |
-| 2 | Kode tiket berurutan (`RSK-2610-0412`, `…0413`) dan tunggal sebagai kunci akses | Orang bisa menebak tiket orang lain (enumerasi) | Akses butuh faktor kedua: 4 digit terakhir HP pelapor. Pesan gagal sama untuk tiket yang ada maupun tidak. Batas 5 kegagalan per 10 menit. Cookie akses ditandatangani HMAC, berlaku 30 menit |
+| 2 | Kode tiket berurutan (`BRK-2610-0412`, `…0413`) dan tunggal sebagai kunci akses | Orang bisa menebak tiket orang lain (enumerasi) | Akses butuh faktor kedua: 4 digit terakhir HP pelapor. Pesan gagal sama untuk tiket yang ada maupun tidak. Batas 5 kegagalan per 10 menit. Cookie akses ditandatangani HMAC, berlaku 30 menit |
 | 3 | Dashboard "khusus pimpinan" tanpa kontrol akses | Siapa pun yang membuka tab bisa melihat | Pemisahan peran di server (pelapor, SPKT, penyidik, pimpinan). Di prototipe peran dipilih lewat pengalih demo, bukan login |
 | 4 | Tombol "Pindai barcode" hanya simulasi dan selalu membuka tiket yang sama; QR berisi teks `JTT\|id\|CONTOH` yang tidak bisa dibuka kamera bawaan ponsel | Pemaparan menyesatkan: terlihat jadi padahal tidak | QR kini berisi URL halaman progres, sehingga kamera ponsel biasa langsung membukanya. Pemindai dalam halaman memakai `BarcodeDetector` bila peramban mendukung |
 | 5 | Kode verifikasi TTE hanya hash dan tidak bisa diperiksa | "Tanda tangan elektronik" hanya hiasan | Halaman `/verifikasi/[kode]` memeriksa kode ke sistem dan sengaja tidak menampilkan isi perkara. Tetap simulasi, lihat bagian 4 |
-| 6 | Kode tiket diturunkan dari nomor urut laporan, padahal nomor LP lazimnya urut per satker | Dua satker berbeda dapat menghasilkan tiket yang sama | Dicatat di `lib/domain/ids.ts`. Produksi: kode acak tak berurutan plus digit pemeriksa |
+| 6 | Kode tiket diturunkan dari nomor urut laporan, padahal nomor LP lazimnya diurut oleh sistem manajemen penyidikan | Dua sumber penomoran dapat menghasilkan tiket yang sama | Dicatat di `lib/domain/ids.ts`. Produksi: kode acak tak berurutan plus digit pemeriksa |
 | 7 | Jam acuan `Math.max(Date.now(), REF)` dan `new Date(datetime-local)` memakai zona waktu perangkat | Bendera keterlambatan dan "n jam lalu" berubah tergantung kapan dan di mana dibuka | Jam demo tunggal di server berjalan dari titik acuan. Semua tanggal diparsing dan ditampilkan dalam WIB |
 | 8 | Angka KPI dashboard ditulis tetap dan tidak cocok dengan daftar 8 laporan; tahap "Disposisi" tidak pernah terpakai pada data contoh | Dashboard terlihat meyakinkan tetapi tidak bisa ditelusuri | Dilabeli sebagai rekap sintetis. Daftar dan bendera dihitung dari data. Penelusuran antar-angka masih pekerjaan lanjutan |
 | 9 | Angka target (1×24 jam, 14 hari) tertanam di teks, kode, dan bendera | Mengubahnya berarti mengubah banyak tempat | Satu berkas `lib/domain/config.ts` |
@@ -73,8 +75,17 @@ Belum diuji: pemindai kamera pada perangkat nyata (hanya fallback yang dicek), p
 Urutan yang disarankan:
 
 1. Kebijakan: tetapkan angka layanan, daftar perkara sensitif, aturan nama penyidik, dan format SP2HP.
-2. Uji kegunaan di satu Polres dengan SPKT dan beberapa pelapor.
+2. Uji kegunaan di SPKT Bareskrim dengan SPKT dan beberapa pelapor.
 3. Autentikasi petugas + basis data + log audit.
 4. Integrasi satu arah dengan sistem penyidikan yang ada.
 5. Notifikasi SP2HP dan TTE tersertifikasi.
 6. Uji keamanan independen sebelum dibuka ke publik.
+
+## 6. Penyesuaian untuk Bareskrim **[validasi]**
+
+- **Satuan.** Penerima laporan adalah SPKT Bareskrim Polri; pimpinan mendisposisikan ke direktorat. Direktorat yang dimodelkan: Dittipidum, Dittipideksus, Dittipidsiber, Dittipidkor, Dittipidnarkoba, Dittipid PPA-PPO, Dittipidter. Nama, susunan, dan penomoran subdit pada data contoh adalah perkiraan; sesuaikan dengan organisasi yang berlaku.
+- **Rute.** Direktorat tujuan awal diturunkan dari jenis perkara (`lib/domain/satker.ts`). Pada praktik, disposisi pimpinan yang menentukan; kolom di formulir hanya perkiraan.
+- **Perkara sensitif.** Jenis "Perdagangan orang" memakai tampilan pelapor yang dibatasi: judul, lokasi, uraian, dan kerugian tidak tampil, dan salinan STPL tidak memuat rincian. Daftar jenis ada di `JENIS_SENSITIF`; keputusan akhir ada pada pimpinan.
+- **Cakupan.** Bareskrim biasanya menangani perkara berskala nasional atau lintas wilayah, dan Polda/Polres menangani sebagian besar laporan. Jalur pelimpahan dari Polda belum dimodelkan.
+- **Kejaksaan.** Seluruh tahap II memakai Kejaksaan Agung RI sebagai contoh; perkara tertentu bisa berbeda.
+- **Lambang.** Berkas lambang diunduh dari Wikimedia Commons dan belum diverifikasi sebagai aset resmi; ganti dengan berkas dari Humas sebelum dipakai di luar uji coba.

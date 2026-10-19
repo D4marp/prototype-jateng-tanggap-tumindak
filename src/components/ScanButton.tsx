@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { BRAND } from "@/lib/brand";
 import { IconScan } from "./icons";
 import { Modal } from "./Modal";
 
 type Detector = { detect: (v: HTMLVideoElement) => Promise<{ rawValue: string }[]> };
 type DetectorCtor = new (o: { formats: string[] }) => Detector;
 
-const TIKET = /RSK-\d{4}-\d{4}/i;
+const TIKET = new RegExp(`${BRAND.tiketPrefix}-\\d{4}-\\d{4}`, "i");
 
 /** Pindai QR/barcode STPL dengan kamera bila peramban mendukung BarcodeDetector. Selain itu, arahkan ke kamera bawaan ponsel. */
 export function ScanButton({ className, children }: { className?: string; children?: ReactNode }) {

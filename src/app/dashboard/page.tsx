@@ -17,7 +17,7 @@ const warnaSatker = (v: number) => (v <= 3 ? "var(--ok)" : v <= 6 ? "var(--gold)
 
 export default async function Dashboard(props: PageProps<"/dashboard">) {
   if (!bolehLihatInternal(await getPeran()))
-    return <RoleGate butuh="pimpinan" jalur="/dashboard" alasan="Dashboard memuat seluruh laporan lintas satker dan hanya dibuka untuk penyidik dan pimpinan." />;
+    return <RoleGate butuh="pimpinan" jalur="/dashboard" alasan="Dashboard memuat seluruh laporan lintas direktorat dan hanya dibuka untuk penyidik dan pimpinan." />;
 
   const f = String((await props.searchParams).f ?? "semua");
   const laporan = semuaLaporan();
@@ -28,16 +28,16 @@ export default async function Dashboard(props: PageProps<"/dashboard">) {
 
   return (
     <>
-      <PageHead judul="Dashboard Reskrim Polda Jateng" sub={`Polda Jawa Tengah dan Polres jajaran, Oktober 2026. Angka rekap adalah data sintetis; tabel di bawah memuat ${semua.length} laporan contoh yang dapat dibuka.`} />
+      <PageHead judul="Dashboard Bareskrim Polri" sub={`Seluruh direktorat, Oktober 2026. Angka rekap adalah data sintetis; tabel di bawah memuat ${semua.length} laporan contoh yang dapat dibuka.`} />
       <div className="wrap grid gap-5 pt-6">
       <Kpis
         items={[
-          { label: "Laporan masuk", nilai: nf(AGREGAT.masuk + baru), catatan: "Polda dan Polres jajaran" },
+          { label: "Laporan masuk", nilai: nf(AGREGAT.masuk + baru), catatan: "SPKT Bareskrim Polri" },
           { label: "Menunggu disposisi", nilai: nf(AGREGAT.s01 + baru), catatan: "target ≤ 1×24 jam" },
           { label: "Penyelidikan", nilai: nf(AGREGAT.lidik), catatan: `${AGREGAT.gelar} lainnya di tahap gelar` },
           { label: "Penyidikan", nilai: nf(AGREGAT.sidik), catatan: "SPDP sudah dikirim" },
           { label: "Selesai (P21)", nilai: nf(AGREGAT.selesai), catatan: "Tahap II ke kejaksaan" },
-          { label: "Respons pertama", nilai: "2,1 jam", catatan: "rata-rata Polda minggu ini", sorot: true },
+          { label: "Respons pertama", nilai: "2,1 jam", catatan: "rata-rata Bareskrim minggu ini", sorot: true },
         ]}
       />
 
@@ -47,9 +47,9 @@ export default async function Dashboard(props: PageProps<"/dashboard">) {
         </div></section>
         <section className="card"><h2 className="card-h">Respons pertama rata-rata <span className="text-[13px] font-normal text-muted">jam, per minggu</span></h2><div className="card-b">
           <Spark data={RESPON_MINGGUAN} />
-          <p className="hint mt-2">Waktu dari laporan masuk sampai disposisi Kasat Reskrim atau Direktur.</p>
+          <p className="hint mt-2">Waktu dari laporan masuk sampai disposisi pimpinan.</p>
         </div></section>
-        <section className="card"><h2 className="card-h">Respons pertama per satker <span className="text-[13px] font-normal text-muted">jam, contoh</span></h2><div className="card-b">
+        <section className="card"><h2 className="card-h">Respons pertama per direktorat <span className="text-[13px] font-normal text-muted">jam, contoh</span></h2><div className="card-b">
           <Bars rows={RESPON_SATKER} max={8} warna={warnaSatker} satuan="jam" />
           <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-x-4 gap-y-2 text-[13.5px]">
             {[["var(--ok)", "≤ 3 jam"], ["var(--gold)", "3–6 jam"], ["var(--brand)", "> 6 jam, perlu atensi"]].map(([c, l]) => (<div key={l} className="flex items-center gap-2"><i className="size-2.5 rounded-[3px]" style={{ background: c }} />{l}</div>))}

@@ -4,9 +4,9 @@ import { TiketForm } from "@/components/TiketForm";
 import { SLA } from "@/lib/domain/config";
 
 const ALUR = [
-  ["Lapor di SPKT", "Petugas Polda atau Polres mencatat laporan langsung ke sistem."],
+  ["Lapor di SPKT", "Petugas SPKT Bareskrim mencatat laporan langsung ke sistem."],
   ["Terima STPL", "Tanda terima bertanda tangan elektronik, memuat QR ke halaman progres."],
-  ["Disposisi", `Kasat Reskrim atau Direktur menunjuk unit dan penyidik, paling lama ${SLA.disposisiJam} jam.`],
+  ["Disposisi", `Pimpinan Bareskrim mendisposisikan ke direktorat dan penyidik, paling lama ${SLA.disposisiJam} jam.`],
   ["Pantau dan diperiksa", "SP2HP terbit berkala. Pemeriksaan saksi dapat lewat video call."],
   ["Perkara tuntas", "Pelapor diberi tahu saat berkas P21 dan diserahkan ke kejaksaan."],
 ];
@@ -22,10 +22,10 @@ const AKSES: [string, string, string][] = [
 ];
 
 const DEMO = [
-  ["Pelapor memantau laporan", "Buka tiket RSK-2610-0412. Halaman memberi tahu 4 digit HP yang dipakai untuk demo.", "/progres/RSK-2610-0412"],
+  ["Pelapor memantau laporan", "Buka tiket BRK-2610-0412. Halaman memberi tahu 4 digit HP yang dipakai untuk demo.", "/progres/BRK-2610-0412"],
   ["Petugas SPKT menerbitkan STPL", "Pilih peran Petugas SPKT, isi data contoh, simpan.", "/lapor"],
   ["Pimpinan membaca dashboard", "Pilih peran Pimpinan. Lihat laporan yang melewati batas waktu.", "/dashboard"],
-  ["Keaslian dokumen diperiksa", "Buka SP2HP, klik tautan verifikasi pada kotak TTE.", "/progres/RSK-2609-0352"],
+  ["Keaslian dokumen diperiksa", "Buka SP2HP, klik tautan verifikasi pada kotak TTE.", "/progres/BRK-2609-0352"],
 ] as const;
 
 export default function Beranda() {
@@ -34,12 +34,12 @@ export default function Beranda() {
       <section className="border-b border-line bg-surface">
         <div className="wrap grid gap-10 py-12 min-[900px]:grid-cols-[1.15fr_1fr] min-[900px]:py-16">
           <div>
-            <p className="m-0 text-sm font-semibold text-brand">Layanan Reserse Polda Jawa Tengah</p>
+            <p className="m-0 text-sm font-semibold text-brand">Layanan pemantauan laporan · Bareskrim Polri</p>
             <h1 className="mb-0 mt-3 text-[clamp(32px,5vw,52px)] font-extrabold leading-[1.08] tracking-tight">
               Pantau laporan polisi Anda dari meja SPKT sampai perkara selesai.
             </h1>
             <p className="mb-0 mt-5 max-w-[52ch] text-base text-muted">
-              Setiap laporan di Polda Jawa Tengah dan Polres jajaran mendapat STPL berbarcode. Dari kode itu pelapor dapat melihat tindak lanjut penyidik, jadwal pemeriksaan, dan SP2HP tanpa datang ke kantor.
+              Setiap laporan di SPKT Bareskrim Polri mendapat STPL berbarcode. Dari kode itu pelapor dapat melihat tindak lanjut penyidik, jadwal pemeriksaan, dan SP2HP tanpa datang ke kantor.
             </p>
             <dl className="m-0 mt-8 grid max-w-[560px] grid-cols-3 gap-4 border-t border-line pt-5">
               {[[`≤ ${SLA.disposisiJam} jam`, "sampai disposisi"], [`${SLA.sp2hpHari} hari`, "antar-SP2HP"], ["Tanpa datang", "cek dan pemeriksaan"]].map(([b, s]) => (
@@ -56,7 +56,7 @@ export default function Beranda() {
             <div className="mt-5 border-t border-line pt-4">
               <div className="mb-2 text-[13px] text-muted">Tiket contoh</div>
               <ul className="m-0 grid list-none gap-1.5 p-0">
-                {["RSK-2610-0412", "RSK-2610-0398", "RSK-2609-0352"].map((k) => (
+                {["BRK-2610-0412", "BRK-2610-0398", "BRK-2609-0352"].map((k) => (
                   <li key={k}><Link href={`/progres/${k}`} className="inline-flex items-center gap-1.5 font-mono text-[13.5px] text-ink underline decoration-line underline-offset-4 hover:decoration-brand">{k}<IconArrow className="size-3.5 text-brand" /></Link></li>
                 ))}
               </ul>

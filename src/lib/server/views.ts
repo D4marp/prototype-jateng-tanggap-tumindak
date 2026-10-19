@@ -4,7 +4,7 @@ import { flag } from "@/lib/domain/derive";
 import { SLA } from "@/lib/domain/config";
 import { ago, dur, fmt, jamWib, maskHp, maskNama, maskNik, maskPenyidik, ROMAWI, rp, wib } from "@/lib/domain/format";
 import { posLabel, SATKER } from "@/lib/domain/satker";
-import type { DocRef, Flag, Report } from "@/lib/domain/types";
+import { JENIS_SENSITIF, type DocRef, type Flag, type Report } from "@/lib/domain/types";
 import { turunan } from "./store";
 
 export interface DocView {
@@ -60,11 +60,11 @@ export async function qrSvg(teks: string, ukuran: number): Promise<string> {
   return QRCode.toString(teks, { type: "svg", margin: 0, width: ukuran, errorCorrectionLevel: "M", color: { dark: "#111111", light: "#ffffff" } });
 }
 
-async function dokumen(r: Report, d: DocRef, pub: boolean, origin: string): Promise<DocView> {
+async function dokumen(r: Report, d: DocRef, pub: boolean, tutup: boolean, origin: string): Promise<DocView> {
   const s = SATKER[r.satker];
   const nama = pub ? maskNama(r.pelapor.nama) : r.pelapor.nama;
   const bulan = ROMAWI[wib(d.t).getUTCMonth()];
-  const kop = ["Kepolisian Negara Republik Indonesia", "Daerah Jawa Tengah", s.kop];
+  const kop = ["Kepolisian Negara Republik Indonesia", "Badan Reserse Kriminal", s.kop];
   const verifyUrl = `${origin}/verifikasi/${d.kode}`;
   const dasar = { kop, kota: s.kota, tanggal: fmt(d.t, false), kode: d.kode, verifyUrl, qrSvg: await qrSvg(verifyUrl, 72), jenis: d.jenis, ke: d.ke };
 
@@ -76,7 +76,9 @@ async function dokumen(r: Report, d: DocRef, pub: boolean, origin: string): Prom
       nomor: `STPL/${r.no}/${bulan}/2026/SPKT`,
       jabatan: "Kepala Siaga SPKT",
       paragraf: [
-        `Telah diterima laporan dari Saudara **${nama}** tentang dugaan tindak pidana **${r.jenis.toLowerCase()}** yang terjadi di ${r.lokasi}${r.kejadian ? `, pada ${fmt(r.kejadian)}` : ""}.`,
+        tutup
+          ? `Telah diterima laporan dari Saudara **${nama}**. Rincian perkara tidak dicantumkan pada salinan ini untuk melindungi pihak yang terlibat.`
+          : `Telah diterima laporan dari Saudara **${nama}** tentang dugaan tindak pidana **${r.jenis.toLowerCase()}** yang terjadi di ${r.lokasi}${r.kejadian ? `, pada ${fmt(r.kejadian)}` : ""}.`,
         `Laporan tercatat dengan Nomor ${r.lp}. Perkembangan laporan dapat dipantau dengan memindai kode di bawah atau memasukkan kode tiket **${r.id}**.`,
       ],
       butir: [],
@@ -110,7 +112,8 @@ export async function bangunView(r: Report, level: "pub" | "int", now: number, o
   const pub = level === "pub";
   const s = SATKER[r.satker];
   const { log, docs, lastDoc } = turunan(r);
-  const posisi = r.stage === 0 ? `SPKT ${s.polda ? "Polda Jawa Tengah" : s.nama}` : r.stage === 5 ? s.kejaksaan : posLabel(s, r.unit);
+  const tutup = pub && JENIS_SENSITIF.includes(r.jenis);
+  const posisi = r.stage === 0 ? "SPKT Bareskrim Polri" : r.stage === 5 ? s.kejaksaan : posLabel(s, r.unit);
   const v = r.vcall;
 
   const view: ReportView = {
@@ -124,20 +127,20 @@ export async function bangunView(r: Report, level: "pub" | "int", now: number, o
     respon: r.m.disp
       ? { teks: dur(r.m.disp - r.m.lapor), ok: true }
       : { teks: `Belum ada disposisi (${dur(now - r.m.lapor)} sejak lapor)`, ok: false },
-    jenis: r.jenis,
-    lokasi: r.lokasi,
-    kejadian: r.kejadian ? fmt(r.kejadian) : "-",
-    judul: r.judul,
-    uraian: r.uraian,
-    kerugian: r.kerugian ? rp(r.kerugian) : null,
+    jenis: tutup ? "Perkara dengan perlindungan khusus" : r.jenis,
+    lokasi: tutup ? "Tidak ditampilkan" : r.lokasi,
+    kejadian: tutup || !r.kejadian ? "-" : fmt(r.kejadian),
+    judul: tutup ? "Perkara dengan perlindungan khusus" : r.judul,
+    uraian: tutup ? "Rincian perkara tidak ditampilkan di jalur publik untuk melindungi pihak yang terlibat. Hubungi penyidik untuk informasi lebih lanjut." : r.uraian,
+    kerugian: r.kerugian && !tutup ? rp(r.kerugian) : null,
     unit: r.stage === 0 ? "Menunggu disposisi" : r.unit,
     penyidik: r.penyidik ? (pub ? maskPenyidik(r.penyidik) : r.penyidik) : "Belum ditunjuk",
     pelapor: pub
       ? { nama: maskNama(r.pelapor.nama), nik: `${r.pelapor.nik.slice(0, 4)}************`, hp: `${r.pelapor.hp.slice(0, 4)}********` }
       : { nama: r.pelapor.nama, nik: maskNik(r.pelapor.nik), hp: maskHp(r.pelapor.hp) },
-    sumber: `SPKT ${s.polda ? "Polda Jawa Tengah" : s.nama}`,
+    sumber: "SPKT Bareskrim Polri",
     log: log.map((e) => ({ judul: e.title, waktu: fmt(e.t), lalu: ago(now, e.t), pub: e.pub, ...(pub ? {} : { internal: e.int }) })),
-    docs: await Promise.all(docs.map((d) => dokumen(r, d, pub, origin))),
+    docs: await Promise.all(docs.map((d) => dokumen(r, d, pub, tutup, origin))),
     vcall: v ? { tanggal: fmt(v.t, false), jam: jamWib(v.t), siapa: v.siapa, unit: r.unit, lewat: v.t < now } : null,
   };
   if (!pub)

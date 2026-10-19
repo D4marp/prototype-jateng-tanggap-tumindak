@@ -1,8 +1,9 @@
 import "server-only";
+import { BRAND } from "@/lib/brand";
 import { derive, type Derived } from "@/lib/domain/derive";
 import { kodeTiket, nomorLp } from "@/lib/domain/ids";
 import { SEED } from "@/lib/domain/seed";
-import { SATKER, unitUntuk } from "@/lib/domain/satker";
+import { satkerUntuk, unitUntuk } from "@/lib/domain/satker";
 import type { Jenis, Report } from "@/lib/domain/types";
 
 /**
@@ -13,7 +14,7 @@ const g = globalThis as { __jttStore?: Report[] };
 g.__jttStore ??= structuredClone(SEED);
 const db = () => g.__jttStore!;
 
-export const TIKET_RE = /^RSK-\d{4}-\d{4}$/;
+export const TIKET_RE = new RegExp(`^${BRAND.tiketPrefix}-\\d{4}-\\d{4}$`);
 export const normalisasiTiket = (s: string) => s.trim().toUpperCase();
 
 export const semuaLaporan = () => db();
@@ -33,7 +34,6 @@ export interface LaporanBaru {
   nik: string;
   hp: string;
   jenis: Jenis;
-  satker: string;
   lokasi: string;
   kronologi: string;
   waktu: number | null;
@@ -42,25 +42,24 @@ export interface LaporanBaru {
 }
 
 export function buatLaporan(v: LaporanBaru, now: number): Report {
-  const s = SATKER[v.satker];
   const no = Math.max(...db().map((r) => r.no)) + 1;
   const r: Report = {
     no,
     id: kodeTiket(no, now),
-    lp: nomorLp(no, v.satker, now),
-    satker: v.satker,
+    lp: nomorLp(no, now),
+    satker: satkerUntuk(v.jenis),
     jenis: v.jenis,
     judul: v.jenis,
     lokasi: v.lokasi,
     stage: 0,
     pelapor: { nama: v.nama, nik: v.nik, hp: v.hp },
-    unit: unitUntuk(s, v.jenis),
+    unit: unitUntuk(v.jenis),
     penyidik: "",
     kerugian: v.kerugian,
     kejadian: v.waktu,
     uraian: v.kronologi.length > 160 ? `${v.kronologi.slice(0, 157)}…` : v.kronologi,
     kronologi: v.kronologi,
-    rencana: `Menunggu disposisi ${s.singkat}.${v.bersediaVideoCall ? " Pelapor bersedia diperiksa lewat video call." : ""}`,
+    rencana: `Menunggu disposisi pimpinan.${v.bersediaVideoCall ? " Pelapor bersedia diperiksa lewat video call." : ""}`,
     m: { lapor: now },
     baru: true,
   };

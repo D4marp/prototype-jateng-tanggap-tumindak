@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import type { Peran } from "@/lib/domain/types";
 
 /**
- * SIMULASI PERAN untuk demo. Produksi: autentikasi petugas (SSO institusi + MFA) dan otorisasi per satker.
+ * SIMULASI PERAN untuk demo. Produksi: autentikasi petugas (SSO institusi + MFA) dan otorisasi per direktorat.
  * Cookie ini TIDAK aman dan hanya dipakai agar pemaparan bisa berpindah sudut pandang.
  */
 export const PERAN_COOKIE = "jtt_peran";

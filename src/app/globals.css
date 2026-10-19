@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Palet diambil dari lambang Polda Jateng: merah, hitam, kuning emas, biru. Hanya tema terang. */
+/* Palet diambil dari lambang Bareskrim Polri: merah, hitam, kuning emas, biru. Hanya tema terang. */
 :root {
   --bg: #f5f4f1;
   --surface: #ffffff;

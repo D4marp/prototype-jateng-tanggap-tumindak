@@ -1,3 +1,4 @@
+import { BRAND } from "@/lib/brand";
 import { Logo } from "./Logo";
 
 export function SiteFooter() {
@@ -6,7 +7,7 @@ export function SiteFooter() {
       <div className="wrap flex items-start gap-4">
         <Logo tinggi={36} />
         <p className="m-0 max-w-[70ch]">
-          Prototipe inovasi reserse untuk program Jateng Tanggap Tumindak, Polda Jawa Tengah. Dirancang untuk SPKT Polda dan Polres jajaran. Seluruh nama, nomor, dan kejadian adalah data contoh fiktif. Lambang dipakai sebagai identitas program dan tidak menjadikan situs ini layanan resmi.
+          Prototipe layanan pemantauan laporan polisi {BRAND.instansi}. Dirancang untuk SPKT Bareskrim Polri. Seluruh nama, nomor, dan kejadian adalah data contoh fiktif. Lambang dipakai sebagai identitas program dan tidak menjadikan situs ini layanan resmi.
         </p>
       </div>
     </footer>

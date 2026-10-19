@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { JENIS } from "@/lib/domain/types";
-import { NAMA_SATKER } from "@/lib/domain/satker";
 
 const digits = (s: string) => s.replace(/\D/g, "");
 
@@ -9,7 +8,6 @@ export const laporanSchema = z.object({
   nik: z.string().transform(digits).pipe(z.string().length(16, "NIK harus 16 digit angka.")),
   hp: z.string().transform(digits).pipe(z.string().min(10, "Nomor HP minimal 10 digit.").max(15, "Nomor HP terlalu panjang.")),
   jenis: z.enum(JENIS, { error: "Pilih jenis perkara." }),
-  satker: z.string().refine((v) => NAMA_SATKER.includes(v), "Pilih satker yang menerima laporan."),
   lokasi: z.string().trim().min(3, "Isi lokasi kejadian."),
   kronologi: z.string().trim().min(20, "Tulis kronologi minimal satu kalimat lengkap."),
   waktu: z.string().optional(),

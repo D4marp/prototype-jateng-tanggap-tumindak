@@ -29,7 +29,7 @@ export function StackBar({ segs }: { segs: [string, number, string][] }) {
           <li key={n} className="flex items-center gap-2"><i className="size-2.5 flex-none rounded-[2px]" style={{ background: c }} />{n}<b className="ml-auto tabular-nums">{nf(v)}</b></li>
         ))}
       </ul>
-      <p className="hint mt-3">Total {nf(tot)} laporan di seluruh satker.</p>
+      <p className="hint mt-3">Total {nf(tot)} laporan di seluruh direktorat.</p>
     </>
   );
 }
@@ -80,7 +80,7 @@ export function TabelLaporan({ rows }: { rows: BarisDaftar[] }) {
     <div className="overflow-x-auto">
       <table className="w-full min-w-[940px] border-collapse text-sm">
         <thead className="bg-panel">
-          <tr>{["Tiket", "Satker", "Perkara", "Tahap", "Penyidik", "SP2HP terakhir", "Status layanan", ""].map((h) => (<th key={h} scope="col" className="th">{h}</th>))}</tr>
+          <tr>{["Tiket", "Direktorat", "Perkara", "Tahap", "Penyidik", "SP2HP terakhir", "Status layanan", ""].map((h) => (<th key={h} scope="col" className="th">{h}</th>))}</tr>
         </thead>
         <tbody>
           {rows.length === 0 && (<tr><td colSpan={8} className="px-3 py-4 text-muted">Tidak ada laporan pada filter ini.</td></tr>)}
